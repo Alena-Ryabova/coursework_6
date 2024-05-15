@@ -1,0 +1,15 @@
+/venv/
+/env/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.db
+.env
+local_settings.py
+/logs/
+*.log
+.idea/
+.vscode/
+*.swp
+/.cache/
