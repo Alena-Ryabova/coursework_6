@@ -1,0 +1,56 @@
+{% extends 'postmails/index.html' %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        Рассылка
+                    </h2>
+                </div>
+                <div class="card-body">
+
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {% if not forloop.last %}
+                        <hr>
+                    {% endif %}
+                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary mt-auto">Сохранить</button>
+
+                </div>
+                {% if product.owner == request.user or request.user.is_superuser %}
+                    <div class="col-md-6">
+                        <div class="card mb-4 box-shadow">
+                            <div class="card-body">
+                                {{ formset.management_form }}
+                                {% for form in formset.forms %}
+                                    {{ form.as_p }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                {% endif %}
+            <div class="card-footer"></div>
+        </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Версия продукта</h2>
+                </div>
+                <div class="card-body">
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+                        {{ form.as_p }}
+                        {% if not formloop.last %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </form>
+{% endblock %}

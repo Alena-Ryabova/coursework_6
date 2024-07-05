@@ -1,0 +1,69 @@
+{% extends 'postmails/index.html' %}
+{% load mediapath_tag %}
+{% block content %}
+    <div class="col-12 mb-5">
+        <a class="btn btn-outline-primary" href="{% url 'postmails:mailing_create' %}"> Добавить рассылку</a>
+    </div>
+    <div class="container align-items-stretch">
+        <div class="row text-center">
+            {% for object in object_list %}
+                <div class="col-3">
+                    <div class="card mb-4 box-shadow h-100 w-100 d-flex flex-column">
+                        <img src="{% mediapath object.product_image %}" class="card-img-top"
+                             alt="{{ object.product_name }}">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ object.product_name }}</h4>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h1 class="card-title pricing-card-title">{{ object.purchase_price }}</h1>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    {{ object.product_description | slice:":100"|truncatechars:100 }}</li>
+                                <br>
+                                <li class="badge bg-secondary">Владелец:
+                                    {{ object.owner|default:"Нет владельца" }}</li>
+                            </ul>
+                            {% if object.versions.all %}
+                                {% for version in object.versions.all %}
+                                    {% if version.version_indicator %}
+                                        <ul class="list-group list-group-flush">
+
+                                            <li class="list-group-item"> Название
+                                                версии: {{ version.version_name }}</li>
+                                            <li class="list-group-item"> Номер
+                                                версии: {{ version.version_num }}</li>
+                                        </ul>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <li> Нет активной версии</li>
+                            {% endif %}
+                            <a type="button" class="btn btn-lg btn-block btn-outline-primary mt-auto"
+                               href="{% url 'catalog:product' object.pk %}">Купить
+                            </a>
+                        </div>
+                        <div class="d-flex justify-content-center py-3">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item"><a href="{% url 'catalog:update_product' object.pk %}"
+                                                        class="nav-link">Добавить версию</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{% url 'catalog:update_product' object.pk %}"
+                                       class="nav-link">Изменить</a>
+                                </li>
+                                {% if user.is_superuser or object.owner == user %}
+
+                                    <li class="nav-item"><a href="{% url 'catalog:delete_product' object.pk %}"
+                                                            class="nav-link">Удалить</a>
+                                    </li>
+                                {% endif %}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
