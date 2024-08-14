@@ -17,20 +17,26 @@
                     <a class="nav-link active" aria-current="page" href="/">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Список клиентов</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'postmails:clients_list' %}">Список
+                        клиентов</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Мои рассылки</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'postmails:mailing_list' %}">Мои
+                        рассылки</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Логи</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'postmails:message_list' %}">Мои
+                        письма</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Мои письма</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'postmails:logs_list' %}">Логи</a>
+                </li>
+             <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'blog:list' %}">Блог</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Выход</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'users:logout' %}">Выход</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'users:profile' %}">Профиль</a>
@@ -38,7 +44,7 @@
 
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Вход</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'users:login' %}">Вход</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'users:register' %}">Регистрация</a>

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     'postmails',
     'users',
+    'blog',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Yekaterinburg'
 
 USE_I18N = True
 
