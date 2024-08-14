@@ -1,69 +1,40 @@
 {% extends 'postmails/index.html' %}
-{% load mediapath_tag %}
 {% block content %}
-    <div class="col-12 mb-5">
-        <a class="btn btn-outline-primary" href="{% url 'postmails:mailing_create' %}"> Добавить рассылку</a>
-    </div>
-    <div class="container align-items-stretch">
-        <div class="row text-center">
-            {% for object in object_list %}
-                <div class="col-3">
-                    <div class="card mb-4 box-shadow h-100 w-100 d-flex flex-column">
-                        <img src="{% mediapath object.product_image %}" class="card-img-top"
-                             alt="{{ object.product_name }}">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">{{ object.product_name }}</h4>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h1 class="card-title pricing-card-title">{{ object.purchase_price }}</h1>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    {{ object.product_description | slice:":100"|truncatechars:100 }}</li>
-                                <br>
-                                <li class="badge bg-secondary">Владелец:
-                                    {{ object.owner|default:"Нет владельца" }}</li>
-                            </ul>
-                            {% if object.versions.all %}
-                                {% for version in object.versions.all %}
-                                    {% if version.version_indicator %}
-                                        <ul class="list-group list-group-flush">
-
-                                            <li class="list-group-item"> Название
-                                                версии: {{ version.version_name }}</li>
-                                            <li class="list-group-item"> Номер
-                                                версии: {{ version.version_num }}</li>
-                                        </ul>
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                <li> Нет активной версии</li>
-                            {% endif %}
-                            <a type="button" class="btn btn-lg btn-block btn-outline-primary mt-auto"
-                               href="{% url 'catalog:product' object.pk %}">Купить
-                            </a>
-                        </div>
-                        <div class="d-flex justify-content-center py-3">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item"><a href="{% url 'catalog:update_product' object.pk %}"
-                                                        class="nav-link">Добавить версию</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{% url 'catalog:update_product' object.pk %}"
-                                       class="nav-link">Изменить</a>
-                                </li>
-                                {% if user.is_superuser or object.owner == user %}
-
-                                    <li class="nav-item"><a href="{% url 'catalog:delete_product' object.pk %}"
-                                                            class="nav-link">Удалить</a>
-                                    </li>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Список рассылок</h1>
+        </div>
+    </section>
+    {% if user.is_authenticated %}
+        <a class="btn btn-outline-primary mb-5" href="{% url 'postmails:mailing_create' %}">Создать рассылку</a>
+    {% endif %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for mailing in object_list %}
+            <div class="col-3 p-1">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text">Название: {{ mailing.name }}</p>
+                        <p class="card-text">Статус: {{ mailing.status }}</p>
+                        <p class="card-text">Периодичность: {{ mailing.periodicity }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                {% if perms.mailing.view_all_mailings or user == mailing.owner or user.is_superuser %}
+                                    <a class="btn btn-primary" href="{% url 'postmails:mailing_detail' mailing.pk %}"
+                                       role="button">Просмотр</a>
                                 {% endif %}
-
-                            </ul>
+                                {% if perms.mailing.deactivate_mailing or user == mailing.owner or user.is_superuser %}
+                                    <a class="btn btn-primary" href="{% url 'postmails:mailing_update' mailing.pk %}"
+                                       role="button">Редактировать</a>
+                                {% endif %}
+                                {% if user == mailing.owner or user.is_superuser %}
+                                    <a class="btn btn-primary" href="{% url 'postmails:mailing_delete' mailing.pk %}"
+                                       role="button">Удалить</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

@@ -21,11 +21,11 @@
         <div class="col-6 col-md">
             <h5>Категории</h5>
             <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="#">Главная</a></li>
-                <li><a class="text-muted" href="#">Клиенты</a></li>
-                <li><a class="text-muted" href="#">Рассылки</a></li>
-                <li><a class="text-muted" href="#">Блог</a></li>
-                <li><a class="text-muted" href="#">Личный кабинет</a></li>
+                <li><a class="text-muted" href="/">Главная</a></li>
+                <li><a class="text-muted" href="{% url 'postmails:clients_list' %}">Клиенты</a></li>
+                <li><a class="text-muted" href="{% url 'postmails:mailing_list' %}">Рассылки</a></li>
+                <li><a class="text-muted" href="{% url 'blog:list' %}">Блог</a></li>
+                <li><a class="text-muted" href="{% url 'users:profile' %}">Личный кабинет</a></li>
             </ul>
         </div>
         <div class="col-6 col-md">
